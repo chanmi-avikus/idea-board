@@ -5,48 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>조직문화 BOOM UP - Avikus</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap');
+  
+  /* 기본 스타일 & 변수 */
+  :root {
+    --bg-gray: #f7f7f5;
+    --border-color: #e8e8e5;
+    --primary-black: #1a1a1a;
+    --text-sub: #888;
+  }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;background:#f7f7f5;color:#1a1a1a;font-size:14px;}
+  body{font-family:'Pretendard', sans-serif;background:var(--bg-gray);color:var(--primary-black);font-size:14px;overflow-x:hidden;}
 
   /* TOP BAR */
-  .topbar{background:#fff;border-bottom:1px solid #e8e8e5;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;}
+  .topbar{background:#fff;border-bottom:1px solid var(--border-color);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;}
   .topbar-left{display:flex;align-items:center;gap:12px;}
-  .topbar-title{font-size:16px;font-weight:600;color:#1a1a1a;}
-  .quarter-tag{font-size:11px;color:#888;border:1px solid #e0e0e0;border-radius:99px;padding:2px 10px;background:#fafafa;}
-  .btn-new{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;}
+  .topbar-title{font-size:18px;font-weight:700;}
+  .quarter-tag{font-size:11px;color:#888;border:1px solid #e0e0e0;border-radius:99px;padding:3px 12px;background:#fafafa;font-weight:600;}
 
-  /* STATS */
-  .stats-bar{display:flex;gap:10px;padding:14px 20px;overflow-x:auto;}
-  .stat{background:#fff;border:1px solid #e8e8e5;border-radius:10px;padding:11px 16px;flex-shrink:0;min-width:110px;}
-  .stat-label{font-size:11px;color:#888;margin-bottom:3px;}
-  .stat-val{font-size:20px;font-weight:700;color:#1a1a1a;}
+  /* 📊 STATS DASHBOARD (이미지 UI 반영) */
+  .stats-container {
+    display: flex;
+    gap: 16px;
+    padding: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .stat-card {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    min-width: 140px;
+    flex: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .stat-label { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; display: block; }
+  .stat-value { font-size: 28px; font-weight: 700; display: block; }
+  .stat-desc { font-size: 11px; color: #bbb; margin-top: 4px; }
 
-  /* BOARD */
-  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:0 20px 24px;align-items:start;}
-  .col{background:#f0f0f080;border-radius:12px;padding:8px;min-height:400px;}
-  .col-header{display:flex;align-items:center;gap:6px;padding:10px 4px;margin-bottom:8px;}
+  /* BOARD GRID */
+  .board{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:24px;padding:0 24px 40px;}
+  .col-header{display:flex;align-items:center;gap:8px;padding:12px 4px;position:sticky;top:64px;background:var(--bg-gray);z-index:10;margin-bottom:12px;}
   .col-dot{width:8px;height:8px;border-radius:50%;}
-  .col-name{font-size:13px;font-weight:700;}
-  .col-cnt{font-size:11px;color:#888;background:#fff;border-radius:99px;padding:1px 6px;margin-left:4px;}
+  .col-name{font-size:14px;font-weight:700;}
+  .col-cnt{font-size:11px;color:#888;background:#eee;border-radius:99px;padding:2px 8px;margin-left:4px;}
 
-  /* CARD */
-  .card{background:#fff;border:1px solid #e8e8e5;border-radius:10px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.02);}
-  .card-cat{display:inline-block;font-size:10px;padding:2px 8px;border-radius:99px;font-weight:600;margin-bottom:10px;}
-  .card-title{font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:8px;line-height:1.4;}
-  .card-body{font-size:12px;color:#444;line-height:1.6;margin-bottom:12px;white-space:pre-wrap;}
-  .card-link{display:block;font-size:11px;color:#378ADD;margin-bottom:10px;text-decoration:none;background:#f0f7ff;padding:6px;border-radius:6px;}
-  .card-footer{border-top:1px solid #f0f0ee;padding-top:10px;display:flex;justify-content:space-between;align-items:center;}
-  .avatar{width:20px;height:20px;border-radius:50%;background:#ddd;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:700;}
-  .author-info{display:flex;align-items:center;gap:6px;font-size:11px;color:#666;}
+  /* CARD STYLE */
+  .card{background:#fff;border:1px solid var(--border-color);border-radius:16px;padding:20px;margin-bottom:16px;transition:transform 0.2s, box-shadow 0.2s;position:relative;}
+  .card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,0.06);}
+  .card-cat-tag{display:inline-block;font-size:10px;padding:3px 10px;border-radius:99px;font-weight:700;margin-bottom:12px;}
+  .status-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#888;margin-bottom:10px;}
+  .status-dot{width:6px;height:6px;border-radius:50%;}
+  .card-title{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:12px;}
+  .card-body{font-size:13px;color:#444;line-height:1.7;margin-bottom:16px;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;}
+  .card-footer{border-top:1px solid #f2f2f0;padding-top:14px;display:flex;justify-content:space-between;align-items:center;}
+  .author-info{display:flex;align-items:center;gap:8px;}
+  .avatar{width:24px;height:24px;border-radius:50%;background:#eee;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .card-date{font-size:11px;color:#bbb;}
 
-  /* MODAL */
-  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center;}
+  /* ✍️ MODAL UI (이미지 반영) */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
   .modal-bg.open{display:flex;}
-  .modal{background:#fff;border-radius:14px;padding:24px;width:450px;}
-  .fg{margin-bottom:12px;}
-  .fl{font-size:11px;font-weight:600;margin-bottom:4px;display:block;}
-  .fg input, .fg textarea, .fg select{width:100%;border:1px solid #ddd;border-radius:8px;padding:8px;font-family:inherit;}
+  .modal{background:#fff;border-radius:24px;padding:32px;width:560px;max-width:90vw;box-shadow:0 24px 60px rgba(0,0,0,0.2);}
+  .modal h3{font-size:20px;font-weight:700;margin-bottom:24px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .form-group{margin-bottom:20px;}
+  .form-label{font-size:12px;font-weight:600;color:#666;margin-bottom:8px;display:block;}
+  .form-control{width:100%;border:1px solid #ddd;border-radius:12px;padding:12px 16px;font-size:14px;font-family:inherit;background:#fafafa;outline:none;}
+  .form-control:focus{border-color:var(--primary-black);background:#fff;}
+  .form-textarea{min-height:120px;resize:vertical;}
+  .modal-footer{display:flex;gap:12px;justify-content:flex-end;margin-top:24px;}
+  .btn{border-radius:12px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:0.2s;}
+  .btn-cancel{background:#f5f5f3;color:#666;}
+  .btn-submit{background:var(--primary-black);color:#fff;}
+  .btn-submit:hover{background:#333;}
 </style>
 </head>
 <body>
@@ -56,110 +89,155 @@
     <span class="topbar-title">조직문화 BOOM UP</span>
     <span class="quarter-tag">2026 Q1</span>
   </div>
-  <button class="btn-new" onclick="openModal()">+ 새 글 작성</button>
+  <button class="btn btn-submit" style="padding:8px 16px;" onclick="openModal()">+ 새 글 작성</button>
 </div>
 
-<div class="stats-bar" id="stats-bar"></div>
+<div class="stats-container" id="stats-dashboard"></div>
+
 <div class="board" id="board"></div>
 
 <div class="modal-bg" id="modal-bg">
   <div class="modal">
-    <h3>새 제안 등록</h3><br>
-    <div class="fg"><label class="fl">카테고리</label>
-      <select id="m-cat">
-        <option value="업무치트키">업무치트키 (The shortcut)</option>
-        <option value="팀패치노트">팀 패치노트 (Patch Notes)</option>
-        <option value="기술SOS">기술 SOS (집단지성)</option>
-        <option value="에너지세이버">에너지 세이버 (Energy Saver)</option>
-        <option value="미식가이드">미식 가이드 (Gourmet Route)</option>
-        <option value="오프리듬">오프 리듬 (Off-Rhythm)</option>
-      </select>
+    <h3>새 글 작성</h3>
+    <div class="form-group">
+      <label class="form-label">작성자 이름</label>
+      <input class="form-control" id="m-name" placeholder="예: 강찬미">
     </div>
-    <div class="fg"><label class="fl">제목</label><input id="m-title"></div>
-    <div class="fg"><label class="fl">내용</label><textarea id="m-body" rows="4"></textarea></div>
-    <div style="text-align:right;">
-      <button onclick="closeModal()">취소</button>
-      <button onclick="submitCard()" style="background:#1a1a1a;color:#fff;border:none;padding:8px 16px;border-radius:8px;">등록</button>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">부서</label>
+        <input class="form-control" id="m-dept" placeholder="부서명">
+      </div>
+      <div class="form-group">
+        <label class="form-label">카테고리</label>
+        <select class="form-control" id="m-cat">
+          <option value="업무치키">업무치키 (The Shortcut)</option>
+          <option value="팀패치노트">팀 패치노트 (Patch Notes)</option>
+          <option value="기술SOS">기술 SOS (집단지성)</option>
+          <option value="에너지세이버">에너지 세이버</option>
+          <option value="미식가이드">미식 가이드</option>
+          <option value="오프리듬">오프 리듬</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">제목 *</label>
+      <input class="form-control" id="m-title" placeholder="한 줄로 요약해주세요">
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용 *</label>
+      <textarea class="form-control form-textarea" id="m-body" placeholder="자유롭게 작성해주세요"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="grid-column: span 2;">
+        <label class="form-label">상태</label>
+        <select class="form-control" id="m-status">
+          <option value="검토중">검토 중</option>
+          <option value="투표중">투표 중</option>
+          <option value="채택완료">채택 완료</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn btn-submit" onclick="submitNewIdea()">등록하기</button>
     </div>
   </div>
 </div>
 
 <script>
 const CAT_META = {
-  '업무치트키': { label:'업무치트키 (The shortcut)', color:'#0C447C', bg:'#E6F1FB', dot:'#378ADD' },
-  '팀패치노트': { label:'팀 패치노트 (Patch Notes)', color:'#3C3489', bg:'#EEEDFE', dot:'#7F77DD' },
-  '기술SOS': { label:'기술 SOS (집단지성)', color:'#27500A', bg:'#EAF3DE', dot:'#639922' },
-  '에너지세이버': { label:'에너지 세이버 (Energy Saver)', color:'#633806', bg:'#FAEEDA', dot:'#BA7517' },
-  '미식가이드': { label:'미식 가이드 (Gourmet Route)', color:'#72243E', bg:'#FBEAF0', dot:'#D4537E' },
-  '오프리듬': { label:'오프 리듬 (Off-Rhythm)', color:'#444441', bg:'#F1EFE8', dot:'#888780' }
+  '업무치키': { label:'업무치키 (The Shortcut)', dot:'#378ADD', bg:'#E6F1FB', color:'#0C447C' },
+  '팀패치노트': { label:'팀 패치노트 (Patch Notes)', dot:'#7F77DD', bg:'#EEEDFE', color:'#3C3489' },
+  '기술SOS': { label:'기술 SOS (집단지성)', dot:'#639922', bg:'#EAF3DE', color:'#27500A' },
+  '에너지세이버': { label:'에너지 세이버', dot:'#BA7517', bg:'#FAEEDA', color:'#633806' },
+  '미식가이드': { label:'미식 가이드', dot:'#D4537E', bg:'#FBEAF0', color:'#72243E' },
+  '오프리듬': { label:'오프 리듬', dot:'#888780', bg:'#F1EFE8', color:'#444441' }
 };
 
-let ideas = [
-  { id:1, cat:'업무치트키', title:'엔지니어의 퇴근을 앞당기는 Claude 활용법', body:'내 소중한 소스코드를 직접 올리지 않고도, Claude를 \'천재 개발 파트너\'로 활용하는 치트키입니다.\n\n- 로직 설계: 복잡한 알고리즘 구조 잡기\n- 리팩토링: 코드 클린업 및 성능 개선\n- 테스트 코드 자동 생성', name:'Chanmi Kang (강찬미)', date:'2026-03-18', link:'https://8ways.cloud' },
-  { id:2, cat:'업무치트키', title:'자율운항 용어, 1분 요약 시트', body:'신규 입사자나 비엔지니어 직군이 당황하기 쉬운 현장 용어(FOC, 제어 로직, 센서 퓨전 등)를 아주 쉬운 비유로 풀이한 공유 문서입니다.', name:'Chanmi Kang (강찬미)', date:'2026-03-17' },
-  { id:3, cat:'팀패치노트', title:'오전 \'몰입 타임\' 도입으로 코드 품질 높이기', body:'오전 10시~12시를 \'Deep Work\' 세션으로 정했습니다. 이 시간엔 메신저 외 오프라인 대화는 잠시 멈춰주세요!', name:'Chanmi Kang (강찬미)', date:'2026-03-17', link:'The 4 mistakes you\'re constantly making' },
-  { id:4, cat:'기술SOS', title:'Jira 티켓 번호를 깃허브 커밋 메시지에 자동 연동하는 법', body:'매번 수동으로 입력하려니 번거롭고 실수도 잦네요. 혹시 커밋 시점에 지라 상태 업데이트까지 한 번에 연동하시는 분 계신가요?', name:'Chanmi Kang (강찬미)', date:'2026-03-17' },
-  { id:5, cat:'기술SOS', title:'신규 선주사 제어기(CAN 통신) 프로토콜 분석해보신 분!', body:'이번에 들어온 신규 장비 로그를 보는데 기존 규격이랑 타임스탬프 찍히는 방식이 좀 다르네요. 팁 부탁드립니다.', name:'Chanmi Kang (강찬미)', date:'2026-03-17' },
-  { id:6, cat:'에너지세이버', title:'건강증진비 활용하기 좋은 주변 운동 시설', body:'엑슬휘트니스(GFC B1): 가깝고 시설 깔끔.\n데니스 테니스: 날씨 영향 없는 실내 테니스장.\n기타 스트레칭 유튜브 채널 공유.', name:'Chanmi Kang (강찬미)', date:'2026-04-16' },
-  { id:7, cat:'미식가이드', title:'해외 선주사 미팅 후 실패 없는 \'정갈한 한정식\' 코스', body:'GFC 타워 근처 \'XX한정식\'은 분위기도 조용하고 음식도 깔끔해서 기술 협약 미팅 마무리하기 딱 좋습니다. 비건 옵션 가능!', name:'Chanmi Kang (강찬미)', date:'2026-03-18' },
-  { id:8, cat:'오프리듬', title:'소리의 숲, 오디뮤(Audeum) 거닐기', body:'서초구에 위치한 음향 전문 박물관입니다. 자율운항 기술을 다루는 우리에게 소리가 주는 공간적 영감은 특별할 것 같네요. (사전 예약 필수)', name:'Chanmi Kang (강찬미)', date:'2026-03-20' },
-  { id:9, cat:'오프리듬', title:'전시회에서 찾은 새로운 기획 아이디어', body:'성수동 \'OO 미키비\' 전시에서 발견한 인터페이스 설계 팁입니다. 직관적인 흐름이 우리 제어 시스템에도 필요해 보여요.', name:'Chanmi Kang (강찬미)', date:'2026-03-18' }
+const STATUS_COLOR = { '검토중': '#888', '투표중': '#BA7517', '채택완료': '#3B6D11' };
+
+// 데이터 로드
+let ideas = JSON.parse(localStorage.getItem('avikus_boom_v3')) || [
+  { id:1, cat:'업무치키', status:'검토중', title:'Claude로 보고서 초안 잡기', body:'보고서 작성이 빨라집니다.', name:'강찬미', dept:'hr팀', date:'03/25', reactions: 24 },
+  { id:2, cat:'팀패치노트', status:'채택완료', title:'오전 몰입 타임 도입', body:'집중 근무 시간을 준수합시다.', name:'강찬미', dept:'개발팀', date:'03/24', reactions: 12 }
 ];
 
-function renderBoard(){
-  const board = document.getElementById('board');
-  board.innerHTML = '';
-  Object.keys(CAT_META).forEach(catKey => {
-    const meta = CAT_META[catKey];
-    const filtered = ideas.filter(i => i.cat === catKey);
-    const col = document.createElement('div');
-    col.className = 'col';
-    col.innerHTML = `
-      <div class="col-header">
-        <div class="col-dot" style="background:${meta.dot}"></div>
-        <span class="col-name">${meta.label}</span>
-        <span class="col-cnt">${filtered.length}</span>
-      </div>
-    `;
-    filtered.forEach(idea => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <span class="card-cat" style="background:${meta.bg};color:${meta.color}">${meta.label}</span>
-        <div class="card-title">${idea.title}</div>
-        <div class="card-body">${idea.body}</div>
-        ${idea.link ? `<a class="card-link" href="#">🔗 ${idea.link}</a>` : ''}
-        <div class="card-footer">
-          <div class="author-info">
-            <div class="avatar">C</div>
-            <span>${idea.name}</span>
-          </div>
-          <span style="font-size:10px;color:#bbb;">${idea.date}</span>
-        </div>
-      `;
-      col.appendChild(card);
-    });
-    board.appendChild(col);
-  });
-  renderStats();
-}
+function updateDashboard() {
+  const dash = document.getElementById('stats-dashboard');
+  const counts = {
+    total: ideas.length,
+    reactions: ideas.reduce((s, i) => s + (i.reactions || 0), 0),
+    adopted: ideas.filter(i => i.status === '채택완료').length,
+    review: ideas.filter(i => i.status === '검토중').length,
+    voting: ideas.filter(i => i.status === '투표중').length
+  };
 
-function renderStats(){
-  const bar = document.getElementById('stats-bar');
-  bar.innerHTML = `
-    <div class="stat"><div class="stat-label">전체 제안</div><div class="stat-val">${ideas.length}</div></div>
-    <div class="stat"><div class="stat-label">이번 주 활성도</div><div class="stat-val">HOT 🔥</div></div>
+  dash.innerHTML = `
+    <div class="stat-card"><span class="stat-label">전체 글</span><span class="stat-value">${counts.total}</span><span class="stat-desc">이번 분기</span></div>
+    <div class="stat-card"><span class="stat-label">총 반응</span><span class="stat-value">${counts.reactions}</span><span class="stat-desc">좋아요·공감 등</span></div>
+    <div class="stat-card"><span class="stat-label">채택 완료</span><span class="stat-value">${counts.adopted}</span><span class="stat-desc">실제 도입됨</span></div>
+    <div class="stat-card"><span class="stat-label">검토 중</span><span class="stat-value">${counts.review}</span></div>
+    <div class="stat-card"><span class="stat-label">투표 진행</span><span class="stat-value">${counts.voting}</span></div>
   `;
 }
 
-function openModal(){ document.getElementById('modal-bg').classList.add('open'); }
-function closeModal(){ document.getElementById('modal-bg').classList.remove('open'); }
-function submitCard(){
+function renderBoard() {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  Object.keys(CAT_META).forEach(cat => {
+    const meta = CAT_META[cat];
+    const filtered = ideas.filter(i => i.cat === cat);
+    const col = document.createElement('div');
+    col.innerHTML = `
+      <div class="col-header"><div class="col-dot" style="background:${meta.dot}"></div><span class="col-name">${cat}</span><span class="col-cnt">${filtered.length}</span></div>
+      ${filtered.map(idea => `
+        <div class="card">
+          <span class="card-cat-tag" style="background:${meta.bg}; color:${meta.color}">${meta.label}</span>
+          <div class="status-row">
+            <div class="status-dot" style="background:${STATUS_COLOR[idea.status]}"></div>
+            <span>${idea.status}</span>
+          </div>
+          <div class="card-title">${idea.title}</div>
+          <div class="card-body">${idea.body}</div>
+          <div class="card-footer">
+            <div class="author-info">
+              <div class="avatar" style="background:${meta.bg}">${idea.name.substring(0,1)}</div>
+              <span style="font-size:12px; font-weight:600;">${idea.name} · ${idea.dept}</span>
+            </div>
+            <span class="card-date">${idea.date}</span>
+          </div>
+        </div>
+      `).join('')}
+    `;
+    board.appendChild(col);
+  });
+  updateDashboard();
+}
+
+function openModal() { document.getElementById('modal-bg').classList.add('open'); }
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+
+function submitNewIdea() {
   const title = document.getElementById('m-title').value;
   const body = document.getElementById('m-body').value;
-  if(!title || !body) return alert('내용을 입력해주세요!');
-  ideas.unshift({ id: Date.now(), cat: document.getElementById('m-cat').value, title, body, name:'강찬미', date:'2026-03-25' });
-  renderBoard(); closeModal();
+  if(!title || !body) return alert('내용을 채워주세요!');
+
+  const newIdea = {
+    id: Date.now(),
+    name: document.getElementById('m-name').value || '익명',
+    dept: document.getElementById('m-dept').value || '미소속',
+    cat: document.getElementById('m-cat').value,
+    title, body,
+    status: document.getElementById('m-status').value,
+    date: '03/25',
+    reactions: 0
+  };
+
+  ideas.unshift(newIdea);
+  localStorage.setItem('avikus_boom_v3', JSON.stringify(ideas));
+  renderBoard();
+  closeModal();
 }
 
 renderBoard();
