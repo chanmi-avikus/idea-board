@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>조직문화 BOOM UP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;background:#f7f7f5;color:#1a1a1a;font-size:14px;}
+
+  /* TOP BAR */
+  .topbar{background:#fff;border-bottom:1px solid #e8e8e5;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;}
+  .topbar-left{display:flex;align-items:center;gap:12px;}
+  .topbar-title{font-size:16px;font-weight:600;color:#1a1a1a;}
+  .quarter-tag{font-size:11px;color:#888;border:1px solid #e0e0e0;border-radius:99px;padding:2px 10px;background:#fafafa;}
+  .topbar-right{display:flex;align-items:center;gap:8px;}
+  select.filter-sel{border:1px solid #e0e0e0;border-radius:8px;padding:5px 10px;font-size:12px;color:#555;background:#fff;cursor:pointer;font-family:inherit;}
+  .btn-new{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .btn-new:hover{background:#333;}
+
+  /* STATS */
+  .stats-bar{display:flex;gap:10px;padding:14px 20px;overflow-x:auto;}
+  .stat{background:#fff;border:1px solid #e8e8e5;border-radius:10px;padding:11px 16px;flex-shrink:0;min-width:110px;}
+  .stat-label{font-size:11px;color:#888;margin-bottom:3px;}
+  .stat-val{font-size:22px;font-weight:700;color:#1a1a1a;}
+  .stat-sub{font-size:10px;color:#bbb;margin-top:1px;}
+
+  /* BOARD */
+  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0;padding:0 20px 24px;align-items:start;}
+
+  /* COLUMN */
+  .col{padding:0 6px;}
+  .col-header{display:flex;align-items:center;gap:6px;padding:14px 2px 10px;position:sticky;top:52px;background:#f7f7f5;z-index:10;}
+  .col-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .col-name{font-size:12px;font-weight:600;color:#1a1a1a;}
+  .col-cnt{font-size:11px;color:#888;background:#eee;border-radius:99px;padding:1px 7px;}
+  .col-add{margin-left:auto;font-size:18px;color:#bbb;cursor:pointer;line-height:1;background:none;border:none;padding:0 2px;}
+  .col-add:hover{color:#555;}
+
+  /* CARD */
+  .card{background:#fff;border:1px solid #e8e8e5;border-radius:12px;padding:14px;margin-bottom:10px;cursor:default;transition:box-shadow .15s;}
+  .card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);}
+  .card-cat{display:inline-block;font-size:10px;padding:2px 8px;border-radius:99px;font-weight:600;margin-bottom:8px;}
+  .card-title{font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.5;margin-bottom:6px;}
+  .card-body{font-size:12px;color:#666;line-height:1.65;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+  .card-link{display:block;font-size:11px;color:#378ADD;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none;}
+  .card-link:hover{text-decoration:underline;}
+
+  /* CARD FOOTER */
+  .card-footer{border-top:1px solid #f0f0ee;padding-top:9px;display:flex;flex-direction:column;gap:8px;}
+  .card-meta{display:flex;align-items:center;justify-content:space-between;}
+  .card-author{display:flex;align-items:center;gap:5px;}
+  .avatar{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;color:#444;}
+  .author-name{font-size:11px;color:#888;}
+  .card-date{font-size:11px;color:#bbb;}
+
+  /* REACTIONS ROW */
+  .reactions{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+  .reaction-btn{display:flex;align-items:center;gap:3px;background:#f5f5f3;border:1px solid #e8e8e5;border-radius:99px;padding:3px 8px;font-size:11px;cursor:pointer;color:#555;transition:background .12s,border-color .12s;}
+  .reaction-btn:hover{background:#eee;border-color:#d0d0d0;}
+  .reaction-btn.active{background:#FFF3DC;border-color:#F5C842;color:#7a5800;}
+  .reaction-btn.active.heart{background:#FFEEF2;border-color:#F4A0B5;color:#9b1b3a;}
+  .reaction-btn.active.fire{background:#FFF0E8;border-color:#F5A87A;color:#8c3d0a;}
+  .reaction-btn.active.clap{background:#F0F7FF;border-color:#85B7EB;color:#0C447C;}
+  .reaction-emoji{font-size:13px;}
+
+  /* COMMENT SECTION */
+  .comments-section{margin-top:6px;}
+  .comments-toggle{font-size:11px;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px;background:none;border:none;padding:0;font-family:inherit;}
+  .comments-toggle:hover{color:#555;}
+  .comments-list{margin-top:8px;display:flex;flex-direction:column;gap:7px;}
+  .comment{background:#f9f9f7;border-radius:8px;padding:8px 10px;}
+  .comment-header{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+  .comment-author{font-size:11px;font-weight:600;color:#1a1a1a;}
+  .comment-date{font-size:10px;color:#bbb;}
+  .comment-text{font-size:12px;color:#555;line-height:1.55;}
+  .comment-input-row{display:flex;gap:6px;margin-top:8px;}
+  .comment-input{flex:1;border:1px solid #e0e0e0;border-radius:8px;padding:6px 10px;font-size:12px;font-family:inherit;color:#1a1a1a;background:#fff;outline:none;}
+  .comment-input:focus{border-color:#aaa;}
+  .comment-submit{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .comment-submit:hover{background:#333;}
+
+  /* EMPTY */
+  .empty{font-size:12px;color:#ccc;padding:6px 0;}
+
+  /* MODAL BACKDROP */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;}
+  .modal-bg.open{display:flex;}
+  .modal{background:#fff;border-radius:14px;padding:26px;width:500px;max-width:96vw;max-height:88vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.15);}
+  .modal h3{font-size:16px;font-weight:700;margin-bottom:18px;}
+  .fg{margin-bottom:13px;}
+  .fl{font-size:11px;font-weight:600;color:#666;margin-bottom:4px;display:block;}
+  .fg input,.fg textarea,.fg select{width:100%;border:1px solid #ddd;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;outline:none;background:#fafafa;color:#1a1a1a;}
+  .fg input:focus,.fg textarea:focus,.fg select:focus{border-color:#999;background:#fff;}
+  .fg textarea{min-height:72px;resize:vertical;}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;}
+  .btn-cancel{background:transparent;border:1px solid #ddd;border-radius:8px;padding:7px 16px;font-size:13px;color:#666;cursor:pointer;font-family:inherit;}
+  .btn-save{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+
+  /* USER BADGE */
+  .user-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 12px;background:#f5f5f3;border-radius:8px;}
+  .user-label{font-size:12px;color:#666;}
+  .user-input{border:1px solid #ddd;border-radius:6px;padding:4px 8px;font-size:12px;font-family:inherit;background:#fff;color:#1a1a1a;outline:none;width:120px;}
+
+  @media(max-width:600px){
+    .board{grid-template-columns:1fr;padding:0 10px 20px;}
+    .stats-bar{padding:10px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">조직문화 BOOM UP</span>
+    <span class="quarter-tag" id="quarter-tag"></span>
+  </div>
+  <div class="topbar-right">
+    <select class="filter-sel" id="cat-filter" onchange="applyFilter()">
+      <option value="all">전체 카테고리</option>
+      <option value="업무치키">업무치키</option>
+      <option value="팀패치노트">팀 패치노트</option>
+      <option value="기술SOS">기술 SOS</option>
+      <option value="에너지세이버">에너지 세이버</option>
+      <option value="미식가이드">미식 가이드</option>
+      <option value="오프리듬">오프 리듬</option>
+    </select>
+    <select class="filter-sel" id="status-filter" onchange="applyFilter()">
+      <option value="all">전체 상태</option>
+      <option value="검토중">검토 중</option>
+      <option value="투표중">투표 중</option>
+      <option value="채택완료">채택 완료</option>
+      <option value="보류">보류</option>
+    </select>
+    <button class="btn-new" onclick="openModal()">+ 새 글 작성</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar" id="stats-bar"></div>
+
+<!-- BOARD -->
+<div class="board" id="board"></div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3>새 글 작성</h3>
+    <div class="user-row">
+      <span class="user-label">작성자 이름:</span>
+      <input class="user-input" id="m-username" placeholder="이름 입력" value="">
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">부서</label><input id="m-dept" placeholder="부서명"></div>
+      <div class="fg"><label class="fl">카테고리</label>
+        <select id="m-cat">
+          <option value="업무치키">업무치키 (The Shortcut)</option>
+          <option value="팀패치노트">팀 패치노트 (Patch Notes)</option>
+          <option value="기술SOS">기술 SOS (집단지성)</option>
+          <option value="에너지세이버">에너지 세이버</option>
+          <option value="미식가이드">미식 가이드</option>
+          <option value="오프리듬">오프 리듬</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">제목 *</label><input id="m-title" placeholder="한 줄로 요약해주세요"></div>
+    <div class="fg"><label class="fl">내용 *</label><textarea id="m-body" placeholder="자유롭게 작성해주세요 (팁, 질문, 정보 등)"></textarea></div>
+    <div class="fg"><label class="fl">참고 링크 (선택)</label><input id="m-link" placeholder="https://..."></div>
+    <div class="fg"><label class="fl">상태</label>
+      <select id="m-status">
+        <option value="검토중">검토 중</option>
+        <option value="투표중">투표 중</option>
+        <option value="채택완료">채택 완료</option>
+        <option value="보류">보류</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-save" onclick="submitCard()">등록하기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CAT_META = {
+  '업무치키':    { label:'업무치키 (The Shortcut)', bg:'#E6F1FB', color:'#0C447C', dot:'#378ADD' },
+  '팀패치노트':  { label:'팀 패치노트 (Patch Notes)', bg:'#EEEDFE', color:'#3C3489', dot:'#7F77DD' },
+  '기술SOS':     { label:'기술 SOS (집단지성)', bg:'#EAF3DE', color:'#27500A', dot:'#639922' },
+  '에너지세이버':{ label:'에너지 세이버', bg:'#FAEEDA', color:'#633806', dot:'#BA7517' },
+  '미식가이드':  { label:'미식 가이드', bg:'#FBEAF0', color:'#72243E', dot:'#D4537E' },
+  '오프리듬':    { label:'오프 리듬', bg:'#F1EFE8', color:'#444441', dot:'#888780' },
+};
+const STATUS_META = {
+  '검토중':   { dot:'#888780' },
+  '투표중':   { dot:'#BA7517' },
+  '채택완료': { dot:'#3B6D11' },
+  '보류':     { dot:'#A32D2D' },
+};
+const REACTIONS = [
+  { key:'heart',  emoji:'❤️', label:'공감' },
+  { key:'fire',   emoji:'🔥', label:'인사이트' },
+  { key:'clap',   emoji:'👏', label:'박수' },
+  { key:'bulb',   emoji:'💡', label:'아이디어' },
+];
+const AVC = ['#B5D4F4','#C0DD97','#FAC775','#F4C0D1','#CECBF6','#9FE1CB','#F0997B'];
+
+function avColor(name){ let s=0; for(let c of (name||'?')) s+=c.charCodeAt(0); return AVC[s%AVC.length]; }
+function fmtDate(d){ const p=d.split('-'); return `${p[1]}/${p[2]}`; }
+function getQ(){ const n=new Date(); return `${n.getFullYear()} Q${Math.ceil((n.getMonth()+1)/3)}`; }
+function save(){ localStorage.setItem('boom_up_v2', JSON.stringify(ideas)); }
+function load(){ return JSON.parse(localStorage.getItem('boom_up_v2')||'null'); }
+
+let ideas = load() || [
+  { id:1, cat:'업무치키', status:'검토중', title:'엔지니어의 퇴근을 앞당기는 Claude 활용법', body:'내 소중한 소스코드를 직접 올리지 않고도, Claude를 \'천재 개발 파트너\'로 활용하는 치트키입니다. 로직과 구조만 물어보세요!\n\n[로직 설계] 복잡한 알고리즘 구조 잡기\n[프롬프트] 파이썬으로 [대용량 로그 데이터]에서 [특정 에러 패턴]만 추출해서 [실시간 대시보드]용 데이터 가공하고 싶어.', link:'https://8ways.cloud', name:'Chanmi Kang (강찬미)', dept:'개발팀', date:'2026-03-18', reactions:{heart:3,fire:5,clap:2,bulb:7}, comments:[{id:1,name:'김민준',date:'2026-03-18',text:'진짜 꿀팁이네요! 저도 써봐야겠어요 ㅎㅎ'},{id:2,name:'이서연',date:'2026-03-19',text:'로직만 공유하면 된다는 게 핵심이군요 👍'}] },
+  { id:2, cat:'팀패치노트', status:'투표중', title:'알림 지옥에서 탈출! 오전 \'몰입 타임\' 도입으로 코드 품질 높이기', body:'연구실에서 딥러닝 모델 학습 돌려놓고 슬랙 알림 때문에 집중 깨진 적 많으시죠?\n\nAS-IS: 시도 때도 없는 알림으로 인한 컨텍스트 스위칭 발생\nTO-BE: 집중 근무 시간 준수 및 급한 건 슬랙 대신 오프라인/전화 활용\n결과: 코드 리뷰 및 로직 설계 몰입도 향상 중! ☆☆☆', link:'https://4mistakes.blog', name:'Chanmi Kang (강찬미)', dept:'기획팀', date:'2026-03-17', reactions:{heart:5,fire:3,clap:4,bulb:2}, comments:[{id:1,name:'박준혁',date:'2026-03-17',text:'저희 팀도 도입하고 싶은데 팀장님 설득이 관건이네요 😅'}] },
+  { id:3, cat:'기술SOS', status:'검토중', title:'Ubuntu 22.04 환경에서 특정 드라이버 라이브러리 충돌 나는데 해결해 보신 분?', body:'자율운항 시뮬레이션 돌리려고 이번에 환경 세팅 다시 했는데, 드라이버만 깔면 화면이 멈추네요. 구글링해도 안 나와서 혹시 비슷한 현상 겪고 해결하신 엔진 파트 분 계실까요?\n\n#UBUNTU #라이브러리 #충돌', link:'', name:'Chanmi Kang (강찬미)', dept:'자율운항팀', date:'2026-03-16', reactions:{heart:1,fire:0,clap:0,bulb:3}, comments:[] },
+  { id:4, cat:'에너지세이버', status:'채택완료', title:'건강증진비 활용하기 좋은 주변 운동시설', body:'매번 건강증진비 신청하고 어디 갈지 고민만 하셨죠?\n\n제가 직접 가보고 비교해 본 아비커스 크루 맞춤형 추천 리스트입니다. 점심시간이나 퇴근 직후에 바로 달려갈 수 있는 곳들이에요!\n\n[헬스/PT] 엑슬휘트니스 (강남파이낸스센터 B1)\n특징: 사무실에서 가깝고 시설이 호텔급으로 깔끔해요.\n\nPro-tip: 건강증진비 영수증 증빙이 가장 깔끔하게 처리되는 곳 중 하나입니다.', link:'', name:'Chanmi Kang (강찬미)', dept:'인사팀', date:'2026-03-10', reactions:{heart:8,fire:2,clap:6,bulb:1}, comments:[{id:1,name:'최동우',date:'2026-03-11',text:'엑슬 진짜 좋죠! 샤워실도 깔끔하고 추천합니다'}] },
+  { id:5, cat:'미식가이드', status:'검토중', title:'해외 선주사나 파트너사 미팅 후 실패 없는 \'정갈한 한정식\' 코스', body:'해외 파트너분들이 오셨을 때 너무 시끄러운 곳은 대화가 힘들죠.\n\nGFC 타워 근처 \'XX한정식\'은 분위기도 조용하고 음식도 깔끔해서 기술 협약 미팅 마무리하기 딱 좋습니다.\n\n채식주의(Vegan) 옵션도 있어서 외국인 손님 대응하기 편해요.\n\nPro-tip: 창가 자리는 예약 필수! 아비커스 이름으로 예약하면 서비스 주실 때도 있어요.', link:'', name:'Chanmi Kang (강찬미)', dept:'사업개발팀', date:'2026-03-10', reactions:{heart:4,fire:1,clap:3,bulb:0}, comments:[] },
+  { id:6, cat:'오프리듬', status:'검토중', title:'소리의 숲, 오디뮤(Audeum) 기념일 방문기', body:'이번 전시회에서 찾은 전국에서 나타나는 기획 아이디어입니다.\n\n나는요: 국/성수 \'OO 미키비\'와\' 신시 / 매세 방문\n\n예매 방법:\n위치: 서울 서초구 반포대로 6 (강남역 이근)\n시간: 10:00 ~ 17:00 (마지막 입장)\n비용: 무료 (사전 예매)\n\n매력 발령(Reservation)\n방법: 오디뮤(audeum.org)에서 온라인 예매', link:'', name:'Chanmi Kang (강찬미)', dept:'마케팅팀', date:'2026-03-18', reactions:{heart:2,fire:0,clap:1,bulb:0}, comments:[] },
+];
+let nextId = Math.max(...ideas.map(i=>i.id))+1;
+let catFilter = 'all', statusFilter = 'all';
+
+document.getElementById('quarter-tag').textContent = getQ();
+
+function applyFilter(){
+  catFilter = document.getElementById('cat-filter').value;
+  statusFilter = document.getElementById('status-filter').value;
+  renderBoard();
+}
+
+function renderStats(){
+  const bar = document.getElementById('stats-bar');
+  const total = ideas.length;
+  const totalReactions = ideas.reduce((s,i)=>s+Object.values(i.reactions).reduce((a,b)=>a+b,0),0);
+  const totalComments = ideas.reduce((s,i)=>s+i.comments.length,0);
+  const adopted = ideas.filter(i=>i.status==='채택완료').length;
+  bar.innerHTML = `
+    <div class="stat"><div class="stat-label">전체 글</div><div class="stat-val">${total}</div><div class="stat-sub">이번 분기</div></div>
+    <div class="stat"><div class="stat-label">총 반응</div><div class="stat-val">${totalReactions}</div><div class="stat-sub">좋아요·공감 등</div></div>
+    <div class="stat"><div class="stat-label">댓글</div><div class="stat-val">${totalComments}</div><div class="stat-sub">전체 댓글 수</div></div>
+    <div class="stat"><div class="stat-label">채택 완료</div><div class="stat-val">${adopted}</div><div class="stat-sub">실제 도입됨</div></div>
+    <div class="stat"><div class="stat-label">검토 중</div><div class="stat-val">${ideas.filter(i=>i.status==='검토중').length}</div><div class="stat-sub"></div></div>
+    <div class="stat"><div class="stat-label">투표 진행</div><div class="stat-val">${ideas.filter(i=>i.status==='투표중').length}</div><div class="stat-sub"></div></div>
+  `;
+}
+
+function renderBoard(){
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  const cats = Object.keys(CAT_META);
+  cats.forEach(cat => {
+    const meta = CAT_META[cat];
+    let filtered = ideas.filter(i => i.cat===cat);
+    if(catFilter!=='all' && catFilter!==cat) return;
+    if(statusFilter!=='all') filtered = filtered.filter(i=>i.status===statusFilter);
+
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.innerHTML = `
+      <div class="col-header">
+        <div class="col-dot" style="background:${meta.dot}"></div>
+        <span class="col-name">${meta.label}</span>
+        <span class="col-cnt">${filtered.length}</span>
+        <button class="col-add" onclick="openModalCat('${cat}')" title="글 작성">+</button>
+      </div>
+    `;
+    if(!filtered.length){
+      col.innerHTML += `<div class="empty" style="padding:8px 2px;">아직 글이 없어요</div>`;
+    }
+    filtered.forEach(idea => {
+      col.appendChild(buildCard(idea, meta));
+    });
+    board.appendChild(col);
+  });
+  renderStats();
+}
+
+function buildCard(idea, meta){
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.id = `card-${idea.id}`;
+
+  const statusDot = STATUS_META[idea.status]?.dot || '#888';
+  const totalR = Object.values(idea.reactions).reduce((a,b)=>a+b,0);
+  const commCount = idea.comments.length;
+
+  div.innerHTML = `
+    <span class="card-cat" style="background:${meta.bg};color:${meta.color}">${meta.label}</span>
+    <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px;">
+      <div style="width:7px;height:7px;border-radius:50%;background:${statusDot};flex-shrink:0;"></div>
+      <span style="font-size:10px;color:#888;">${idea.status}</span>
+    </div>
+    <div class="card-title">${idea.title}</div>
+    <div class="card-body">${idea.body.replace(/\n/g,'<br>')}</div>
+    ${idea.link ? `<a class="card-link" href="${idea.link}" target="_blank">🔗 ${idea.link}</a>` : ''}
+    <div class="card-footer">
+      <div class="card-meta">
+        <div class="card-author">
+          <div class="avatar" style="background:${avColor(idea.name)}">${(idea.name||'?').slice(0,2)}</div>
+          <span class="author-name">${idea.name}${idea.dept?` · ${idea.dept}`:''}</span>
+        </div>
+        <span class="card-date">${fmtDate(idea.date)}</span>
+      </div>
+      <div class="reactions" id="reactions-${idea.id}"></div>
+      <div class="comments-section">
+        <button class="comments-toggle" onclick="toggleComments(${idea.id})">
+          💬 댓글 ${commCount}개 ${commCount?'보기':'달기'}
+        </button>
+        <div id="comments-${idea.id}" style="display:none;">
+          <div class="comments-list" id="clist-${idea.id}"></div>
+          <div class="comment-input-row">
+            <input class="comment-input" id="cinput-${idea.id}" placeholder="댓글을 입력하세요..." onkeydown="if(event.key==='Enter')addComment(${idea.id})">
+            <button class="comment-submit" onclick="addComment(${idea.id})">등록</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  renderReactions(idea);
+  renderComments(idea);
+  return div;
+}
+
+function renderReactions(idea){
+  const el = document.getElementById(`reactions-${idea.id}`);
+  if(!el) return;
+  el.innerHTML = REACTIONS.map(r => {
+    const cnt = idea.reactions[r.key]||0;
+    const active = (idea.myReactions||{})[r.key] ? r.key : '';
+    return `<button class="reaction-btn ${active}" onclick="toggleReaction(${idea.id},'${r.key}')" title="${r.label}">
+      <span class="reaction-emoji">${r.emoji}</span>
+      <span>${cnt||''}</span>
+    </button>`;
+  }).join('');
+}
+
+function toggleReaction(id, key){
+  const idea = ideas.find(i=>i.id===id);
+  if(!idea) return;
+  if(!idea.myReactions) idea.myReactions = {};
+  if(idea.myReactions[key]){
+    idea.myReactions[key] = false;
+    idea.reactions[key] = Math.max(0,(idea.reactions[key]||0)-1);
+  } else {
+    idea.myReactions[key] = true;
+    idea.reactions[key] = (idea.reactions[key]||0)+1;
+  }
+  save();
+  renderReactions(idea);
+  renderStats();
+}
+
+function renderComments(idea){
+  const el = document.getElementById(`clist-${idea.id}`);
+  if(!el) return;
+  if(!idea.comments.length){ el.innerHTML = `<div style="font-size:11px;color:#bbb;padding:4px 0;">아직 댓글이 없어요. 첫 댓글을 남겨보세요!</div>`; return; }
+  el.innerHTML = idea.comments.map(c=>`
+    <div class="comment">
+      <div class="comment-header">
+        <div class="avatar" style="background:${avColor(c.name)};width:18px;height:18px;font-size:8px;">${(c.name||'?').slice(0,2)}</div>
+        <span class="comment-author">${c.name}</span>
+        <span class="comment-date">${fmtDate(c.date)}</span>
+      </div>
+      <div class="comment-text">${c.text}</div>
+    </div>
+  `).join('');
+}
+
+function toggleComments(id){
+  const el = document.getElementById(`comments-${id}`);
+  const idea = ideas.find(i=>i.id===id);
+  if(!el) return;
+  const open = el.style.display==='none';
+  el.style.display = open ? 'block' : 'none';
+  if(open) renderComments(idea);
+  const btn = el.previousElementSibling;
+  if(btn) btn.innerHTML = `💬 댓글 ${idea.comments.length}개 ${open?'접기':'보기'}`;
+}
+
+function addComment(id){
+  const inp = document.getElementById(`cinput-${id}`);
+  const text = inp?.value.trim();
+  if(!text) return;
+  const name = prompt('이름을 입력해주세요:') || '익명';
+  const idea = ideas.find(i=>i.id===id);
+  if(!idea) return;
+  const today = new Date();
+  const date = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  idea.comments.push({ id: Date.now(), name, date, text });
+  save();
+  inp.value = '';
+  renderComments(idea);
+  renderStats();
+  const btn = document.getElementById(`comments-${id}`)?.previousElementSibling;
+  if(btn) btn.innerHTML = `💬 댓글 ${idea.comments.length}개 접기`;
+}
+
+let _modalCat = null;
+function openModal(){ _modalCat=null; document.getElementById('modal-bg').classList.add('open'); }
+function openModalCat(cat){ _modalCat=cat; document.getElementById('m-cat').value=cat; document.getElementById('modal-bg').classList.add('open'); }
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('open');
+  ['m-title','m-body','m-link','m-dept'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+document.getElementById('modal-bg').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+function submitCard(){
+  const title = document.getElementById('m-title').value.trim();
+  const body  = document.getElementById('m-body').value.trim();
+  const name  = document.getElementById('m-username').value.trim() || '익명';
+  const dept  = document.getElementById('m-dept').value.trim();
+  const cat   = document.getElementById('m-cat').value;
+  const link  = document.getElementById('m-link').value.trim();
+  const status= document.getElementById('m-status').value;
+  if(!title||!body){ alert('제목과 내용은 필수예요!'); return; }
+  const today = new Date();
+  const date = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  ideas.unshift({ id:nextId++, cat, status, title, body, link, name, dept, date, reactions:{heart:0,fire:0,clap:0,bulb:0}, myReactions:{}, comments:[] });
+  save();
+  closeModal();
+  renderBoard();
+}
+
+renderBoard();
+</script>
+</body>
+</html>
