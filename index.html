@@ -11,116 +11,90 @@
     --bg-gray: #f7f7f5;
     --border-color: #e8e8e5;
     --primary-black: #1a1a1a;
-    --text-sub: #888;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Pretendard', sans-serif;background:var(--bg-gray);color:var(--primary-black);font-size:14px;overflow-x:hidden;}
+  body{font-family:'Pretendard', sans-serif;background:var(--bg-gray);color:var(--primary-black);font-size:14px;}
 
   /* TOP BAR */
   .topbar{background:#fff;border-bottom:1px solid var(--border-color);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;}
-  .topbar-left{display:flex;align-items:center;gap:12px;}
   .topbar-title{font-size:18px;font-weight:700;}
-  .quarter-tag{font-size:11px;color:#888;border:1px solid #e0e0e0;border-radius:99px;padding:3px 12px;background:#fafafa;font-weight:600;}
 
-  /* 📊 STATS DASHBOARD */
-  .stats-container { display: flex; gap: 16px; padding: 24px; overflow-x: auto; scrollbar-width: none; }
-  .stat-card { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; min-width: 140px; flex: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-  .stat-label { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; display: block; }
+  /* 📊 이미지의 집계 대시보드 UI 반영 */
+  .stats-container { display: flex; gap: 16px; padding: 24px; overflow-x: auto; }
+  .stat-card { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; min-width: 160px; flex: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+  .stat-label { font-size: 12px; color: #888; margin-bottom: 8px; display: block; }
   .stat-value { font-size: 28px; font-weight: 700; display: block; }
 
   /* BOARD GRID */
   .board{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:24px;padding:0 24px 40px;}
-  .col-header{display:flex;align-items:center;gap:8px;padding:12px 4px;position:sticky;top:64px;background:var(--bg-gray);z-index:10;margin-bottom:12px;}
+  .col-header{display:flex;align-items:center;gap:8px;padding:12px 4px;margin-bottom:12px;}
   .col-dot{width:8px;height:8px;border-radius:50%;}
   .col-name{font-size:14px;font-weight:700;}
-  .col-cnt{font-size:11px;color:#888;background:#eee;border-radius:99px;padding:2px 8px;margin-left:4px;}
 
-  /* CARD STYLE */
-  .card{background:#fff;border:1px solid var(--border-color);border-radius:16px;padding:20px;margin-bottom:16px;transition:0.2s;position:relative;}
-  .card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,0.06);}
-  .card-edit-btn{position:absolute;top:18px;right:18px;background:none;border:none;color:#ccc;cursor:pointer;font-size:12px;font-weight:600;}
-  .card-edit-btn:hover{color:var(--primary-black);}
+  /* CARD & ACTIONS */
+  .card{background:#fff;border:1px solid var(--border-color);border-radius:16px;padding:20px;margin-bottom:16px;position:relative; transition: 0.2s;}
+  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+  .card-actions{position:absolute;top:18px;right:18px;display:flex;gap:8px;}
+  .btn-icon{background:none;border:none;color:#ccc;cursor:pointer;font-size:11px;font-weight:600;}
+  .btn-icon:hover{color:var(--primary-black);}
   
   .card-cat-tag{display:inline-block;font-size:10px;padding:3px 10px;border-radius:99px;font-weight:700;margin-bottom:12px;}
   .status-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#888;margin-bottom:10px;}
   .status-dot{width:6px;height:6px;border-radius:50%;}
-  .card-title{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:12px;padding-right:30px;}
+  .card-title{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:12px;padding-right:40px;}
   .card-body{font-size:13px;color:#444;line-height:1.7;margin-bottom:16px;white-space:pre-wrap;}
   .card-footer{border-top:1px solid #f2f2f0;padding-top:14px;display:flex;justify-content:space-between;align-items:center;}
-  .author-info{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;}
-  .avatar{width:24px;height:24px;border-radius:50%;background:#eee;font-size:10px;display:flex;align-items:center;justify-content:center;}
+  .avatar{width:24px;height:24px;border-radius:50%;background:#eee;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;}
 
-  /* ✍️ MODAL UI */
+  /* ✍️ 작성/수정 모달 UI */
   .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
   .modal-bg.open{display:flex;}
   .modal{background:#fff;border-radius:24px;padding:32px;width:560px;max-width:94vw;box-shadow:0 24px 60px rgba(0,0,0,0.2);}
-  .modal h3{font-size:20px;font-weight:700;margin-bottom:24px;}
   .form-group{margin-bottom:18px;}
   .form-label{font-size:12px;font-weight:600;color:#666;margin-bottom:8px;display:block;}
   .form-control{width:100%;border:1px solid #ddd;border-radius:12px;padding:12px 16px;font-size:14px;font-family:inherit;background:#fafafa;outline:none;}
-  .form-textarea{min-height:100px;resize:vertical;}
-  .modal-footer{display:flex;gap:12px;justify-content:flex-end;margin-top:24px;}
-  .btn{border-radius:12px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;border:none;}
-  .btn-submit{background:var(--primary-black);color:#fff;}
+  .btn-submit{background:var(--primary-black);color:#fff; border-radius:12px; padding:12px 24px; font-weight:700; cursor:pointer; border:none;}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-left">
-    <span class="topbar-title">조직문화 BOOM UP</span>
-    <span class="quarter-tag">2026 Q1</span>
-  </div>
-  <button class="btn btn-submit" style="padding:8px 16px;" onclick="openModal()">+ 새 글 작성</button>
+  <div class="topbar-left"><span class="topbar-title">조직문화 BOOM UP</span></div>
+  <button class="btn-submit" style="padding:8px 16px;" onclick="openModal()">+ 새 글 작성</button>
 </div>
 
 <div class="stats-container" id="stats-dashboard"></div>
+
 <div class="board" id="board"></div>
 
 <div class="modal-bg" id="modal-bg">
   <div class="modal">
-    <h3 id="modal-title">새 글 작성</h3>
+    <h3 id="modal-title" style="margin-bottom:20px;">새 글 작성</h3>
     <input type="hidden" id="m-id">
-    <div class="form-group">
-      <label class="form-label">작성자</label>
-      <input class="form-control" id="m-name" placeholder="이름">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+      <div class="form-group"><label class="form-label">작성자</label><input class="form-control" id="m-name"></div>
+      <div class="form-group"><label class="form-label">부서</label><input class="form-control" id="m-dept"></div>
     </div>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
       <div class="form-group">
-        <label class="form-label">부서</label>
-        <input class="form-control" id="m-dept" placeholder="부서명">
-      </div>
-      <div class="form-group">
         <label class="form-label">카테고리</label>
         <select class="form-control" id="m-cat">
-          <option value="업무치키">업무치키</option>
-          <option value="팀패치노트">팀 패치노트</option>
-          <option value="기술SOS">기술 SOS</option>
-          <option value="에너지세이버">에너지 세이버</option>
-          <option value="미식가이드">미식 가이드</option>
-          <option value="오프리듬">오프 리듬</option>
+          <option value="업무치키">업무치키</option><option value="팀패치노트">팀 패치노트</option>
+          <option value="기술SOS">기술 SOS</option><option value="에너지세이버">에너지 세이버</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">상태</label>
+        <select class="form-control" id="m-status">
+          <option value="검토중">검토 중</option><option value="투표중">투표 중</option><option value="채택완료">채택 완료</option>
         </select>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">제목</label>
-      <input class="form-control" id="m-title" placeholder="한 줄 요약">
-    </div>
-    <div class="form-group">
-      <label class="form-label">내용</label>
-      <textarea class="form-control form-textarea" id="m-body"></textarea>
-    </div>
-    <div class="form-group">
-        <label class="form-label">상태</label>
-        <select class="form-control" id="m-status">
-          <option value="검토중">검토 중</option>
-          <option value="투표중">투표 중</option>
-          <option value="채택완료">채택 완료</option>
-        </select>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal()">취소</button>
-      <button class="btn btn-submit" id="btn-save" onclick="saveCard()">등록하기</button>
+    <div class="form-group"><label class="form-label">제목</label><input class="form-control" id="m-title"></div>
+    <div class="form-group"><label class="form-label">내용</label><textarea class="form-control" id="m-body" style="height:100px;"></textarea></div>
+    <div style="text-align:right; gap:10px; display:flex; justify-content:flex-end;">
+      <button onclick="closeModal()" style="background:#eee; border:none; padding:12px 24px; border-radius:12px; cursor:pointer;">취소</button>
+      <button class="btn-submit" id="btn-save" onclick="saveCard()">등록하기</button>
     </div>
   </div>
 </div>
@@ -130,21 +104,17 @@ const CAT_META = {
   '업무치키': { label:'Shortcut', dot:'#378ADD', bg:'#E6F1FB', color:'#0C447C' },
   '팀패치노트': { label:'Patch Note', dot:'#7F77DD', bg:'#EEEDFE', color:'#3C3489' },
   '기술SOS': { label:'Tech SOS', dot:'#639922', bg:'#EAF3DE', color:'#27500A' },
-  '에너지세이버': { label:'Welfare', dot:'#BA7517', bg:'#FAEEDA', color:'#633806' },
-  '미식가이드': { label:'Gourmet', dot:'#D4537E', bg:'#FBEAF0', color:'#72243E' },
-  '오프리듬': { label:'Refresh', dot:'#888780', bg:'#F1EFE8', color:'#444441' }
+  '에너지세이버': { label:'Welfare', dot:'#BA7517', bg:'#FAEEDA', color:'#633806' }
 };
 
-const STATUS_COLOR = { '검토중': '#888', '투표중': '#BA7517', '채택완료': '#3B6D11' };
-
-let ideas = JSON.parse(localStorage.getItem('avikus_v4')) || [
-  { id:1, cat:'업무치키', status:'검토중', title:'엔지니어 Claude 활용법', body:'로직 설계 시 매우 유용합니다.', name:'강찬미', dept:'hr팀', date:'03/25' }
+let ideas = JSON.parse(localStorage.getItem('avikus_final_data')) || [
+  { id:1, cat:'업무치키', status:'채택완료', title:'Claude 활용 보고서 자동화', body:'아비커스만의 보고서 톤을 학습시켜 효율을 높입니다.', name:'강찬미', dept:'HR', date:'2026-03-25' }
 ];
 
 function updateDashboard() {
   const dash = document.getElementById('stats-dashboard');
   dash.innerHTML = `
-    <div class="stat-card"><span class="stat-label">전체 글</span><span class="stat-value">${ideas.length}</span></div>
+    <div class="stat-card"><span class="stat-label">전체 제안</span><span class="stat-value">${ideas.length}</span></div>
     <div class="stat-card"><span class="stat-label">채택 완료</span><span class="stat-value">${ideas.filter(i=>i.status==='채택완료').length}</span></div>
     <div class="stat-card"><span class="stat-label">검토 중</span><span class="stat-value">${ideas.filter(i=>i.status==='검토중').length}</span></div>
   `;
@@ -157,22 +127,16 @@ function renderBoard() {
     const meta = CAT_META[cat];
     const filtered = ideas.filter(i => i.cat === cat);
     const col = document.createElement('div');
-    col.innerHTML = `
-      <div class="col-header"><div class="col-dot" style="background:${meta.dot}"></div><span class="col-name">${cat}</span><span class="col-cnt">${filtered.length}</span></div>
+    col.innerHTML = `<div class="col-header"><div class="col-dot" style="background:${meta.dot}"></div><span class="col-name">${cat}</span></div>
       ${filtered.map(idea => `
         <div class="card">
-          <button class="card-edit-btn" onclick="editCard(${idea.id})">수정</button>
+          <div class="card-actions"><button class="btn-icon" onclick="editCard(${idea.id})">수정</button><button class="btn-icon" style="color:#ff6b6b" onclick="deleteCard(${idea.id})">삭제</button></div>
           <span class="card-cat-tag" style="background:${meta.bg}; color:${meta.color}">${meta.label}</span>
-          <div class="status-row"><div class="status-dot" style="background:${STATUS_COLOR[idea.status]}"></div><span>${idea.status}</span></div>
+          <div class="status-row"><span>● ${idea.status}</span></div>
           <div class="card-title">${idea.title}</div>
           <div class="card-body">${idea.body}</div>
-          <div class="card-footer">
-            <div class="author-info"><div class="avatar" style="background:${meta.bg}">${idea.name[0]}</div><span>${idea.name}</span></div>
-            <span class="card-date">${idea.date}</span>
-          </div>
-        </div>
-      `).join('')}
-    `;
+          <div class="card-footer"><span>${idea.name} · ${idea.dept}</span><span>${idea.date}</span></div>
+        </div>`).join('')}`;
     board.appendChild(col);
   });
   updateDashboard();
@@ -180,7 +144,6 @@ function renderBoard() {
 
 function openModal() {
   document.getElementById('modal-title').innerText = '새 글 작성';
-  document.getElementById('btn-save').innerText = '등록하기';
   document.getElementById('m-id').value = '';
   ['m-name', 'm-dept', 'm-title', 'm-body'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('modal-bg').classList.add('open');
@@ -189,7 +152,6 @@ function openModal() {
 function editCard(id) {
   const idea = ideas.find(i => i.id === id);
   document.getElementById('modal-title').innerText = '글 수정하기';
-  document.getElementById('btn-save').innerText = '수정 완료';
   document.getElementById('m-id').value = idea.id;
   document.getElementById('m-name').value = idea.name;
   document.getElementById('m-dept').value = idea.dept;
@@ -200,33 +162,28 @@ function editCard(id) {
   document.getElementById('modal-bg').classList.add('open');
 }
 
+function deleteCard(id) { if(confirm('정말 삭제할까요?')) { ideas = ideas.filter(i => i.id !== id); saveAndRender(); } }
 function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
 
 function saveCard() {
   const id = document.getElementById('m-id').value;
   const data = {
     id: id ? parseInt(id) : Date.now(),
-    name: document.getElementById('m-name').value,
-    dept: document.getElementById('m-dept').value,
+    name: document.getElementById('m-name').value || '익명',
+    dept: document.getElementById('m-dept').value || '미소속',
     cat: document.getElementById('m-cat').value,
     title: document.getElementById('m-title').value,
     body: document.getElementById('m-body').value,
     status: document.getElementById('m-status').value,
-    date: '03/25'
+    date: new Date().toISOString().split('T')[0]
   };
-
-  if(id) {
-    const idx = ideas.findIndex(i => i.id === data.id);
-    ideas[idx] = data;
-  } else {
-    ideas.unshift(data);
-  }
-  
-  localStorage.setItem('avikus_v4', JSON.stringify(ideas));
-  renderBoard();
+  if(id) { const idx = ideas.findIndex(i => i.id === data.id); ideas[idx] = data; } 
+  else { ideas.unshift(data); }
+  saveAndRender();
   closeModal();
 }
 
+function saveAndRender() { localStorage.setItem('avikus_final_data', JSON.stringify(ideas)); renderBoard(); }
 renderBoard();
 </script>
 </body>
