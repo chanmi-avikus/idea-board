@@ -79,7 +79,7 @@
       <div class="form-group">
         <label class="form-label">카테고리</label>
         <select class="form-control" id="m-cat">
-          <option value="업무치키">업무치키</option><option value="팀패치노트">팀 패치노트</option>
+          <option value="업무치키">업무치트키</option><option value="팀패치노트">팀 패치노트</option>
           <option value="기술SOS">기술 SOS</option><option value="에너지세이버">에너지 세이버</option>
         </select>
       </div>
@@ -101,14 +101,14 @@
 
 <script>
 const CAT_META = {
-  '업무치키': { label:'Shortcut', dot:'#378ADD', bg:'#E6F1FB', color:'#0C447C' },
+  '업무치트키': { label:'Shortcut', dot:'#378ADD', bg:'#E6F1FB', color:'#0C447C' },
   '팀패치노트': { label:'Patch Note', dot:'#7F77DD', bg:'#EEEDFE', color:'#3C3489' },
   '기술SOS': { label:'Tech SOS', dot:'#639922', bg:'#EAF3DE', color:'#27500A' },
   '에너지세이버': { label:'Welfare', dot:'#BA7517', bg:'#FAEEDA', color:'#633806' }
 };
 
 let ideas = JSON.parse(localStorage.getItem('avikus_final_data')) || [
-  { id:1, cat:'업무치키', status:'채택완료', title:'Claude 활용 보고서 자동화', body:'아비커스만의 보고서 톤을 학습시켜 효율을 높입니다.', name:'강찬미', dept:'HR', date:'2026-03-25' }
+  { id:1, cat:'업무치트키', status:'채택완료', title:'Claude 활용 보고서 자동화', body:'아비커스만의 보고서 톤을 학습시켜 효율을 높입니다.', name:'강찬미', dept:'HR', date:'2026-03-25' }
 ];
 
 function updateDashboard() {
